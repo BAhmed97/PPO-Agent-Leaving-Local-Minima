@@ -1,7 +1,7 @@
 import os
 import torch
 import matplotlib.pyplot as plt
-from env import create_env
+from env import CustomMetaDriveEnv
 from policy import PPOPolicy, PPOTrainer
 
 
@@ -14,7 +14,13 @@ def main():
     policy = PPOPolicy(obs_dim, act_dim)
 
     # Create custom environment
-    env = create_env(policy_class=PPOPolicy)
+    env_config = {
+        "use_render": False,
+        "traffic_density": 0.3,
+        "start_seed": 0,
+        "num_agents": 1
+    }
+    env = CustomMetaDriveEnv(env_config, policy)
 
     # Initialize PPO trainer
     trainer = PPOTrainer(
